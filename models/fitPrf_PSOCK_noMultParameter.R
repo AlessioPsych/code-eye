@@ -59,7 +59,7 @@ setwd(mainDir)
 
 # split number of voxels in chunks
 nVoxels <- dim(tsTransposedSel)[2]
-totalVoxelsIterations <- ceil( nVoxels / 200 )
+totalVoxelsIterations <- ceil( nVoxels / 250 )
 limitsSelVoxels <- round( seq(1, nVoxels, length.out=totalVoxelsIterations) ) #split between chuncks for parallel fitting (about 200 voxels each)
 limitsSelVoxels[1] <- 1
 limitsSelVoxels[ length(limitsSelVoxels) ] <- nVoxels
@@ -131,7 +131,7 @@ fittingPrf <- function( idxFile, predictionFiles, tsTransposedSel ) {
   #outModelTest <- lapply( 1:3, voxelModel, tsTransposedSel=tsTransposedSel, limitsSelVoxelsMatrix=limitsSelVoxelsMatrix, tsPrediction=tsPrediction )
   print( sprintf('parallel fitting: %1.0f of %1.0f ...', idxFile, length( predictionFiles ) ) )
   detectCores()
-  nCores <- 12
+  nCores <- 8
   cl <- makeCluster(nCores, type='PSOCK')
   showConnections()
   storeTimePar <- system.time( outModel <- parLapply(cl, runIndex, voxelModel, 

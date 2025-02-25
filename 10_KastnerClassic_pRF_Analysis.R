@@ -10,7 +10,7 @@ library( abind )
 library( circular )
 
 # folders 
-mainFolder <- '/analyse/Project0226/KastnerModel/staging_area_Kastner'
+mainFolder <- '/home/fracasso/Data/analyse/Project0226/KastnerModel/staging_area_Kastner'
 prfDir <- sprintf( '%s/expConditions/bars', mainFolder )
 anatomyDir <- sprintf( '%s/anatomies_KastnerClassic_Freesurfer', mainFolder )
 modelsDir <- sprintf('%s/modelsOutput', mainFolder )
@@ -46,7 +46,8 @@ data.frame( pRFParticipants, selectedAnatFolders )
 
 runCodeFlag <- 1
 
-Sys.setenv(OMP_NUM_THREADS='8')
+#### set the number of threads ####
+Sys.setenv(OMP_NUM_THREADS='6')
 Sys.getenv('OMP_NUM_THREADS')
 
 #### create outputFolder folder, pRF ####
@@ -148,7 +149,7 @@ for ( nPart in 1:length(pRFParticipants) ) { # nPart <- 1 1:length(pRFParticipan
   print( instr )
   if (runCodeFlag==1) { system( instr ) }
   
-  # detrend cw
+  # detrend
   instr <- paste('3dDetrend',
                  sprintf('-polort 3'),
                  sprintf( '-prefix %s_zzz_pRF_detrended.nii', participantName ),
@@ -168,7 +169,7 @@ for ( nPart in 1:length(pRFParticipants) ) { # nPart <- 1 1:length(pRFParticipan
   if (runCodeFlag==1) { system( instr ) }
   
   # get mask
-  instr <- sprintf('3dmask_tool -input %s_ANATOMY.zzz.grayMatter.nii -prefix %s_mask_auto.nii.gz -dilate_input 1', participantName, participantName )  
+  instr <- sprintf('3dmask_tool -input %s_ANATOMY.zzz.grayMatter.nii -prefix %s_mask_auto.nii.gz -NN1 -dilate_input 1 -1', participantName, participantName )  
   print( instr )
   if (runCodeFlag==1) { system( instr ) }
   

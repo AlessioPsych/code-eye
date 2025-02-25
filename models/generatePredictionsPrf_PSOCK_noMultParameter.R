@@ -5,8 +5,8 @@ setwd( mainDir )
 
 # to debug
 #rm( list=ls() ); gc();
-#setwd('/analyse/Project0226/dataToSort/eyeMovPoster/ASM16_BarsEyes')
-#args <- c('zzz_meanTs_bars_topUp_dt_blur_sm.nii.gz', '4', '0', '0', '0', 'zzz_del_prfSimple')
+#setwd('/home/fracasso/Data/analyse/Project0226/KastnerModel/staging_area_Kastner/modelsOutput/pRF/AFH28')
+#args <- c('AFH28_zzz_pRF_detrended.nii', '4', '0', '0', '0', 'zzz_del_prfSimple')
 #mainDir <- getwd()
 #setwd( mainDir )
 
@@ -49,7 +49,7 @@ nDynamics <- as.numeric( nDynamics )
 
 # load stimuli definition
 print('get stimulus...')
-setwd('/analyse/Project0226/dataSummary')
+setwd('/home/fracasso/Data/analyse/Project0226/dataSummary')
 if (stimType==1) { 
   arrayStim <- scan( 'eyeMovingStim.txt' )
   setwd(mainDir)
@@ -92,11 +92,24 @@ if (stimType==8) {
 }
 stimMatFlip <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
 
-#x11( width=3, height=3 )
-#for ( snap in 1:dim(stimMat)[3] ) {
-#  image( stimMatFlip[,,snap], axes=FALSE ); par(new=TRUE); Sys.sleep(0.01)
-#}
-stimSeq <- stimMatFlip
+# define circular mask
+x <- seq(-10,10,length.out = dim(stimMatFlip)[1] )
+y <- seq(-5.5,5.5,length.out = dim(stimMatFlip)[2] )
+meshOut <- meshgrid( y, x )
+circularMask <- sqrt( (meshOut$X+2)^2 + meshOut$Y^2 ) < 10
+circularMask[ meshOut$X < -3.5 ] <- 0
+image( circularMask )
+dim( circularMask )
+
+stimSeq <- array( 0, dim( stimMatFlip ) )
+x11( width=3, height=3 )
+for ( snap in 1:dim(stimMat)[3] ) {
+  tempImage <- stimMatFlip[,,snap]*circularMask
+  image( tempImage, axes=FALSE ); par(new=TRUE); Sys.sleep(0.01)
+  stimSeq[,,snap] <- tempImage
+}
+graphics.off()
+#stimSeq <- stimMatFlip
 x <- seq(-10,10,length.out = dim(stimSeq)[1] )
 y <- seq(-5.5,5.5,length.out = dim(stimSeq)[2] )
 stimSeqMat <- array( stimSeq, c( length(x)*length(y), dim(stimSeq)[3] ) )
@@ -104,11 +117,17 @@ rm( stimMat )
 rm( stimMatFlip )
 gc()
 
+#x11( width=3, height=3 )
+#for ( snap in 1:dim(stimMat)[3] ) {
+#  image( stimMatFlip[,,snap], axes=FALSE ); par(new=TRUE); Sys.sleep(0.01)
+#}
+
+
 #this part of the code builds a matrix with all the possible prediction tested, for both models at this stage
 if (fineFit==0) {
-  xElements <- 22 #22
-  yElements <- 24 #24
-  sigmaArrayPositiveElements <- 25 #32
+  xElements <- 12 #22
+  yElements <- 14 #24
+  sigmaArrayPositiveElements <- 13 #25
   multParElements <- 0 #5
   hrfDelayOnsetElements <- 1
   hrfDelayUnderShootElements <- 1
@@ -134,7 +153,7 @@ print('build prediction...')
 xPosFit <- seq( -10, 10, length.out=xElements )
 yPosFit <- seq( -5.5, 5.5, length.out=yElements )
 #sigmaArrayPositive <- seq( 0.5, 11, length.out=sigmaArrayPositiveElements )
-sigmaArrayPositive <- exp( seq( log( 0.2 ), log( 11 ), length.out=sigmaArrayPositiveElements ) )
+sigmaArrayPositive <- exp( seq( log( 0.25 ), log( 11 ), length.out=sigmaArrayPositiveElements ) )
 #sigmaArrayPositive <- exp( seq( log( 0.2 ), log( 8 ), length.out=sigmaArrayPositiveElements ) )
 #staticNonLin <- seq( 0.3, 1.8, length.out=s_nLinElements )
 staticNonLin <- 1
@@ -308,7 +327,7 @@ predictionWrapper <- function( passIdx, limitsMat, inputGrid ) {
   selectedRows <- limitsMat[passIdx, ]
   
   # generate predictions:
-  nCores <- 12
+  nCores <- 8
   cl <- makeCluster(nCores, type='PSOCK')
   showConnections()
   storeTimePar <- system.time( tsPredictions <- parSapply(cl, selectedRows[1]:selectedRows[2], generatePrediction,

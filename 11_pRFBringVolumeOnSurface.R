@@ -10,7 +10,7 @@ library( abind )
 library( circular )
 
 # folders 
-mainFolder <- '/analyse/Project0226/KastnerModel/staging_area_Kastner'
+mainFolder <- '/home/fracasso/Data/analyse/Project0226/KastnerModel/staging_area_Kastner'
 anatomyDir <- sprintf( '%s/anatomies_KastnerClassic_Freesurfer', mainFolder )
 modelOutputFolder <- sprintf('%s/modelsOutput/pRF', mainFolder )
 
@@ -45,10 +45,10 @@ data.frame( modelParticipants, selectedAnatFolders )
 
 runCodeFlag <- 1
 
-Sys.setenv(OMP_NUM_THREADS='8')
+Sys.setenv(OMP_NUM_THREADS='6')
 Sys.getenv('OMP_NUM_THREADS')
 
-for ( nPart in 1:length( modelParticipants )  ) { # nPart <- 2 # length( modelParticipants )
+for ( nPart in 1:length( modelParticipants )  ) { # nPart <- 1 # length( modelParticipants )
   
   # get models names:
   setwd( modelOutputFolder )
