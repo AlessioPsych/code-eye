@@ -1,8 +1,8 @@
 rm( list=ls() );
-mainDir <- '/analyse/Project0226/KastnerModel/staging_area_Kastner'
-KastnerDir <- 'KastnerClassic_hrf_modulation'
+mainDir <- '/home/fracasso/Data/analyse/Project0226/KastnerModel/staging_area_Kastner'
+KastnerDir <- 'KastnerClassic_no_hrf_modulation'
 pRFDir <- 'pRF'
-figuresOutput <- 'figures_KastnerClassic_hrf_modulation'
+figuresOutput <- 'figures_KastnerClassic_no_hrf_modulation'
 resultsDir <- 'results'
 setwd( mainDir )
 setwd( resultsDir )
@@ -408,7 +408,7 @@ graphics.off()
 subsetDF_quantile <- c()
 for ( p in unique( df_kastner_model_filt_clean$participant ) ) { # p <- 'ASM16'
   subsetDF <- subset( df_kastner_model_filt_clean, participant==p )
-  subsetDF$adjR2_05_quantile <- as.numeric( cut( subsetDF$adjR2_05, 
+  subsetDF$adjR2_05_quantile <- as.numeric( .bincode( subsetDF$adjR2_05, 
                                                breaks=quantile( subsetDF$adjR2_05, seq( 0, 1, 0.01 ) ), 
                                                include.lowest = TRUE ) ) / 100
   subsetDF_quantile <- rbind( subsetDF_quantile, subsetDF )

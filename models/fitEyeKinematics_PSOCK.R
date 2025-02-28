@@ -138,7 +138,7 @@ fittingEyeKinematics <- function( idxFile, predictionFiles, tsTransposedSel ) {
   # parallel fitting
   print( sprintf('parallel fitting: %1.0f of %1.0f ...', idxFile, length( predictionFiles ) ) )
   detectCores()
-  nCores <- 12
+  nCores <- 8
   cl <- makeCluster(nCores, type='PSOCK')
   showConnections()
   storeTimePar <- system.time( outModel <- parLapply( cl, runIndex, voxelModel, 

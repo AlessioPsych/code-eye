@@ -10,7 +10,7 @@ library( abind )
 library( circular )
 
 # folders 
-mainFolder <- '/analyse/Project0226/KastnerModel/staging_area_Kastner'
+mainFolder <- '/home/fracasso/Data/analyse/Project0226/KastnerModel/staging_area_Kastner'
 cwDir <- sprintf( '%s/expConditions/kastnerFinerCw', mainFolder )
 ccwDir <- sprintf( '%s/expConditions/kastnerFinerCCw', mainFolder )
 anatomyDir <- sprintf( '%s/anatomies_KastnerClassic_Freesurfer', mainFolder )
@@ -53,7 +53,7 @@ data.frame( cwParticipants, ccwParticipants, selectedAnatFolders )
 
 runCodeFlag <- 1
 
-Sys.setenv(OMP_NUM_THREADS='8')
+Sys.setenv(OMP_NUM_THREADS='6')
 Sys.getenv('OMP_NUM_THREADS')
 
 #### create outputFolder folder, kastnerClassic ####
@@ -143,7 +143,7 @@ for ( nPart in 1:length(cwParticipants) ) { #length(cwParticipants) # nPart <- 1
   
   #blur cw
   instr <- paste('3dmerge',
-                 '-1blur_fwhm 1.5',
+                 '-1blur_fwhm 0.1',
                  '-doall',
                  sprintf('-prefix %s_CW_blur.nii.gz', participantName ),
                  sprintf( '%s', cwParticipants[nPart]  ) )
@@ -152,7 +152,7 @@ for ( nPart in 1:length(cwParticipants) ) { #length(cwParticipants) # nPart <- 1
   
   #blur ccw
   instr <- paste('3dmerge',
-                 '-1blur_fwhm 1.5',
+                 '-1blur_fwhm 0.1',
                  '-doall',
                  sprintf('-prefix %s_CCW_blur.nii.gz', participantName ),
                  sprintf( '%s', ccwParticipants[nPart]  ) )
@@ -366,7 +366,7 @@ for ( nPart in 1:length(cwParticipants) ) { #length(cwParticipants) # nPart <- 1
   if (runCodeFlag==1) { system( instr ) }
   
   # get mask
-  instr <- sprintf('3dmask_tool -input %s_ANATOMY.zzz.grayMatter.nii -prefix %s_mask_auto.nii.gz -dilate_input 1', participantName, participantName )  
+  instr <- sprintf('3dmask_tool -input %s_ANATOMY.zzz.grayMatter.nii -prefix %s_mask_auto.nii.gz -NN1 -dilate_input 1 -1', participantName, participantName )  
   print( instr )
   if (runCodeFlag==1) { system( instr ) }
   

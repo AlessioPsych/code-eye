@@ -96,8 +96,8 @@ stimMatFlip <- aperm( stimMat[ dim(stimMat)[1]:1,, ], c(2,1,3) )
 x <- seq(-10,10,length.out = dim(stimMatFlip)[1] )
 y <- seq(-5.5,5.5,length.out = dim(stimMatFlip)[2] )
 meshOut <- meshgrid( y, x )
-circularMask <- sqrt( (meshOut$X+2)^2 + meshOut$Y^2 ) < 10
-circularMask[ meshOut$X < -3.5 ] <- 0
+circularMask <- sqrt( (meshOut$X+2)^2 + meshOut$Y^2 ) < 9.5
+circularMask[ meshOut$X < -3.2 ] <- 0
 image( circularMask )
 dim( circularMask )
 

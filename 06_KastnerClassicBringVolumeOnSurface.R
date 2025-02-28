@@ -10,7 +10,7 @@ library( abind )
 library( circular )
 
 # folders 
-mainFolder <- '/analyse/Project0226/KastnerModel/staging_area_Kastner'
+mainFolder <- '/home/fracasso/Data/analyse/Project0226/KastnerModel/staging_area_Kastner'
 anatomyDir <- sprintf( '%s/anatomies_KastnerClassic_Freesurfer', mainFolder )
 modelOutputFolder <- sprintf('%s/modelsOutput/kastnerClassic', mainFolder )
 
@@ -45,7 +45,7 @@ data.frame( modelParticipants, selectedAnatFolders )
 
 runCodeFlag <- 1
 
-Sys.setenv(OMP_NUM_THREADS='8')
+Sys.setenv(OMP_NUM_THREADS='6')
 Sys.getenv('OMP_NUM_THREADS')
 
 for ( nPart in 1:length( modelParticipants )  ) { #nPart <- 1# length( modelParticipants )
@@ -143,8 +143,8 @@ for ( nPart in 1:length( modelParticipants )  ) { #nPart <- 1# length( modelPart
                        sprintf( '-surf_B std.141.%s.pial.gii', nHemi ),
                        sprintf( '-sv %s/%s', 'kastnerClassicModelsAnatomy', allModels[ nModels ] ),
                        sprintf( '-grid_parent %s/%s', 'kastnerClassicModelsAnatomy', allModels[ nModels ] ),
-                       sprintf( '-map_func nzave' ),
-                       sprintf( '-f_steps 10' ),
+                       sprintf( '-map_func midpoint' ),
+                       #sprintf( '-f_steps 10' ),
                        sprintf( '-f_index nodes' ),                                  
                        modelOutputNameInstruction
         )

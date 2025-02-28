@@ -160,10 +160,10 @@ thetaExp10 <- circular( thetaExp10, type='angles', units='radians',
 
 #this part of the code builds a matrix with all the possible prediction tested
 if (fineFit==1) {
-  hrfDelayOnsetElements <- 2
-  hrfDelayUnderShootElements <- 2
-  hrfb1Elements <- 3
-  hrfb2Elements <- 3
+  hrfDelayOnsetElements <- 1 #2
+  hrfDelayUnderShootElements <- 1 #2
+  hrfb1Elements <- 1 #3
+  hrfb2Elements <- 1 #3
   hrfcElements <- 1
   hrf_a1 <- seq( 6, 7, length.out=hrfDelayOnsetElements )
   hrf_a2 <- seq( 11, 16, length.out=hrfDelayUnderShootElements )
@@ -172,7 +172,7 @@ if (fineFit==1) {
   hrf_c <- seq( 0.35, 0.5, length.out=hrfcElements  ) 
   muPar <- c( seq( 0.02, 6.26, length.out = 20 ) ) #58
   #muPar <- c( seq( 6.28-(6.28*0.99), 6.28*0.99, length.out = 45 ) ) #58
-  kappaPar <- seq( 0.05, 0.95, length.out = 18 )
+  kappaPar <- seq( 0.05, 0.95, length.out = 24 )
   if (components=='both') {
     multPar <- seq( 0.1, 0.9, length.out = 5 )
   } else{
@@ -192,9 +192,9 @@ if (fineFit==0) {
   hrf_b1 <- seq( 0.9, 1.4, length.out=hrfb1Elements  ) 
   hrf_b2 <- seq( 0.9, 1.4, length.out=hrfb2Elements  ) 
   hrf_c <- seq( 0.35, 0.6, length.out=hrfcElements  ) 
-  muPar <- c( seq( 0+0.04, 2*pi-0.04, length.out = 20 ) ) #22
+  muPar <- c( seq( 0+0.04, 2*pi-0.04, length.out = 24 ) ) #22
   #muPar <- c( seq( 6.28-(6.28*0.95), 6.28*0.95, length.out = 8 ) ) #58
-  kappaPar <- seq( 0.05, 0.95, length.out = 16 ) #18
+  kappaPar <- seq( 0.05, 0.95, length.out = 22 ) #18
   if (components=='both') {
     multPar <- seq( 0.05, 0.95, length.out = 7 )
   } else{
@@ -361,7 +361,7 @@ predictionWrapper <- function( passIdx, limitsMat, inputGrid ) {
   selectedRows <- limitsMat[passIdx, ]
   
   # generate predictions:
-  nCores <- 12
+  nCores <- 8
   cl <- makeCluster(nCores, type='PSOCK')
   showConnections()
   storeTimePar <- system.time( tsPredictions <- parSapply(cl, selectedRows[1]:selectedRows[2], generatePrediction,

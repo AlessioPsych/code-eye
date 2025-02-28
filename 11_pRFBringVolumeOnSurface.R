@@ -142,8 +142,8 @@ for ( nPart in 1:length( modelParticipants )  ) { # nPart <- 1 # length( modelPa
                        sprintf( '-surf_B std.141.%s.pial.gii', nHemi ),
                        sprintf( '-sv %s/%s', 'pRFModelAnatomy', allModels[ nModels ] ),
                        sprintf( '-grid_parent %s/%s', 'pRFModelAnatomy', allModels[ nModels ] ),
-                       sprintf( '-map_func nzave' ),
-                       sprintf( '-f_steps 10' ),
+                       sprintf( '-map_func midpoint' ),
+                       #sprintf( '-f_steps 10' ),
                        sprintf( '-f_index nodes' ),                                  
                        modelOutputNameInstruction
         )

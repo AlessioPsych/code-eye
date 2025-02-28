@@ -10,7 +10,7 @@ library( abind )
 library( circular )
 
 # folders 
-mainFolder <- '/analyse/Project0226/KastnerModel/staging_area_Kastner'
+mainFolder <- '/home/fracasso/Data/analyse/Project0226/KastnerModel/staging_area_Kastner'
 anatomyDir <- sprintf( '%s/anatomies_KastnerClassic_Freesurfer', mainFolder )
 modelOutputFolder <- sprintf('%s/modelsOutput/kastnerClassic', mainFolder )
 surfaceFolder <- sprintf('%s/anatomies_KastnerClassic_Freesurfer/surfaceAtlases/suma_MNI152_2009', mainFolder)
@@ -179,6 +179,6 @@ for ( nModels in 1:length( allParams ) ) { # nModels <- 1
     outModelDf <- rbind( outModelDf, outModelDfTemp )
     
   }
-  save( outModelDf, file = sprintf( '%s/%s/%s.RData', resultsFolder, 'KastnerClassic_hrf_modulation', allParams[ nModels ] ) )
+  save( outModelDf, file = sprintf( '%s/%s/%s.RData', resultsFolder, 'KastnerClassic_no_hrf_modulation', allParams[ nModels ] ) )
 }
 
